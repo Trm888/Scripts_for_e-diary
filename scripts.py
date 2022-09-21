@@ -28,7 +28,7 @@ def remove_chastisements(kid_name):  # Функция удаления всех 
 
 def create_commendation(kid_name):  # Функция создания похвалы для ученика по случайному предмету
     try:
-        options_praise = ["Просто блестяще", "А ты хорош",
+        commendations = ["Просто блестяще", "А ты хорош",
                           "Молодец!", "Отлично!", "Хорошо!",
                           "Гораздо лучше, чем я ожидал!",
                           "Ты меня приятно удивил!",
@@ -38,7 +38,7 @@ def create_commendation(kid_name):  # Функция создания похва
         one_lesson = Lesson.objects.filter(year_of_study=6, group_letter='А',
                                            subject__title=choice(subjects_names)).first()
         kid = Schoolkid.objects.get(full_name__contains=kid_name)
-        Commendation.objects.create(text=choice(options_praise),
+        Commendation.objects.create(text=choice(commendations),
                                     created=one_lesson.date,
                                     schoolkid=kid,
                                     subject=one_lesson.subject,
