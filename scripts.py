@@ -26,16 +26,16 @@ def remove_chastisements(kid_name):  # Функция удаления всех 
             ' попробуйте уточнить запрос и запустить скрипт еще раз')
 
 
-def create_commendation(kid_name):  # Функция создания похвалы для ученика по случайному предмету
+def create_commendation(kid_name, year_of_study, group_letter):  # Функция создания похвалы для ученика по случайному предмету
     try:
         commendations = ["Просто блестяще", "А ты хорош",
                           "Молодец!", "Отлично!", "Хорошо!",
                           "Гораздо лучше, чем я ожидал!",
                           "Ты меня приятно удивил!",
                           "Великолепно!", "Прекрасно!"]
-        subjects = Subject.objects.filter(year_of_study=6)
+        subjects = Subject.objects.filter(year_of_study=year_of_study)
         subjects_names = [subject.title for subject in subjects]
-        one_lesson = Lesson.objects.filter(year_of_study=6, group_letter='А',
+        one_lesson = Lesson.objects.filter(year_of_study=year_of_study, group_letter=group_letter,
                                            subject__title=choice(subjects_names)).first()
         kid = Schoolkid.objects.get(full_name__contains=kid_name)
         Commendation.objects.create(text=choice(commendations),
