@@ -6,8 +6,7 @@ from datacenter.models import (Chastisement, Commendation, Lesson, Mark,
 
 def fix_marks(kid_name):  # Функция исправления плохих оценок ученика
     try:
-        kid = Schoolkid.objects.get(full_name__contains=kid_name)
-        Mark.objects.filter(schoolkid=kid.pk, points__lte=3).update(points=5)
+        Mark.objects.filter(points__lte=3).select_related('schoolkid').filter(schoolkid__full_name__contains=kid_name).update(points=5)
     except Schoolkid.DoesNotExist:
         print('ФИО отсутствует в базе данных, попробуйте еще раз')
     except Schoolkid.MultipleObjectsReturned:
