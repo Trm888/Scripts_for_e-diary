@@ -7,9 +7,9 @@ from datacenter.models import (Chastisement, Commendation, Lesson, Mark,
 def fix_marks(kid_name):  # Функция исправления плохих оценок ученика
     try:
         Mark.objects.filter(points__lte=3).select_related('schoolkid').filter(schoolkid__full_name__contains=kid_name).update(points=5)
-    except Schoolkid.DoesNotExist:
+    except Mark.DoesNotExist:
         print('ФИО отсутствует в базе данных, попробуйте еще раз')
-    except Schoolkid.MultipleObjectsReturned:
+    except Mark.MultipleObjectsReturned:
         print(
             'Вы ничего не ввели или под данным именем находится много людей,'
             ' попробуйте уточнить запрос и запустить скрипт еще раз')
@@ -17,12 +17,10 @@ def fix_marks(kid_name):  # Функция исправления плохих �
 
 def remove_chastisements(kid_name):  # Функция удаления всех замечаний ученика
     try:
-        kid = Schoolkid.objects.get(full_name__contains=kid_name)
-        chastisements_schoolkid = Chastisement.objects.filter(schoolkid=kid.pk)
-        chastisements_schoolkid.delete()
-    except Schoolkid.DoesNotExist:
+        Chastisement.objects.all().select_related('schoolkid').filter(schoolkid__full_name__contains=kid_name).delete()
+    except Chastisement.DoesNotExist:
         print('ФИО отсутствует в базе данных, попробуйте еще раз')
-    except Schoolkid.MultipleObjectsReturned:
+    except Chastisement.MultipleObjectsReturned:
         print(
             'Вы ничего не ввели или под данным именем находится много людей,'
             ' попробуйте уточнить запрос и запустить скрипт еще раз')
