@@ -36,9 +36,9 @@ def create_commendation(kid_name):  # Функция создания похва
                           "Ты меня приятно удивил!",
                           "Великолепно!", "Прекрасно!"]
         subjects = Subject.objects.filter(year_of_study=6)
-        subjects_names_list = [subject.title for subject in subjects]
+        subjects_names = [subject.title for subject in subjects]
         one_lesson = Lesson.objects.filter(year_of_study=6, group_letter='А',
-                                           subject__title=choice(subjects_names_list)).first()
+                                           subject__title=choice(subjects_names)).first()
         kid = Schoolkid.objects.get(full_name__contains=kid_name)
         Commendation.objects.create(text=choice(options_praise),
                                     created=one_lesson.date,
